@@ -1,0 +1,49 @@
+.form-content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+}
+
+#parent{
+    text-align: center;    
+}
+  
+#user-form {
+    display: flex;
+    flex-direction: column;
+    width: 60vw;
+    gap: 20px;
+}
+  
+label
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+fieldset {
+    padding: 2vw 2vh;
+    border-radius: 10px;
+}
+
+#form-label {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+  
+textarea{
+    width: 30vw;
+}
+
+#submitbutton{
+    background-color: #212529;
+    border-color: transparent;
+    height: 4vh;
+    color: white;
+    border-radius: 10px;
+    font-weight: bold;
+}

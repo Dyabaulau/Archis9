@@ -1,6 +1,11 @@
 resource "aws_apigatewayv2_api" "main" {
   name = "main"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_origins = [ "*" ]
+    allow_headers = [ "*" ]
+    allow_methods = [ "GET", "POST" ]
+  }
 }
 
 resource "aws_apigatewayv2_stage" "dev" {
