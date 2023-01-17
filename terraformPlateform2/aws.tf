@@ -65,10 +65,6 @@ resource "aws_security_group" "back" {
   }
 }
 
-variable "key_name" {
-  default = ""
-}
-
 resource "aws_launch_configuration" "backend-config" {
   image_id        = "ami-02b01316e6e3496d9"
   instance_type   = "t2.micro"
