@@ -1,22 +1,13 @@
 #!/bin/bash
 
-# Update packages
-sudo yum update -y
+sudo yum install git -y
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm install 16
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 3000
 
-# Install Node.js and npm
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash
-source ~/.bashrc
-nvm install node
-
-# Clone the React application from GitHub
 git clone https://github.com/Dyabaulau/Archis9.git
 cd Archis9/front
-
-# Install dependencies
 npm install
-
-# Build the application
-npm run build
-
-# Start the application
 npm start

@@ -27,8 +27,10 @@ async def hello():
 
 class Person(BaseModel):
     uuid: str
-    name: str
+    firstName: str
+    lastName: str
     age: int
+    profession: str
 
 @app.post("/hello")
 async def hello(person: Person):
