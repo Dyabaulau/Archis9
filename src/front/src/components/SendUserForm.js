@@ -1,5 +1,6 @@
 import '../styles/SendUserForm.css'
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function SendUserForm() {
 
@@ -9,6 +10,7 @@ function SendUserForm() {
         age: 0,
         profession: "",
     })
+    const [env, setEnv] = useState({});
 
     function handleChange(evt) {
         const value = evt.target.value;
@@ -17,6 +19,31 @@ function SendUserForm() {
             [evt.target.name]: value
         });
     }
+
+    useEffect(() => {
+        const configRequest = {
+            method: 'GET',
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': '*', // This is the important part
+            }
+
+        };
+
+        fetch('https://balapp-archi-front.s3.amazonaws.com/config.env', configRequest)
+            .then(response => response.text())
+            .then(text => {
+                // parse the text file as json
+                console.log(text)
+                const env = text.split('=')[1]
+                console.log(env)
+                setEnv({ env });
+            });
+    }, []);
+
+    console.log(env["env"])
 
     const sendRequest = async () => {
 
@@ -39,7 +66,7 @@ function SendUserForm() {
         };
 
         try {
-            const response = await fetch("https://7wywawxkl5.execute-api.eu-west-3.amazonaws.com/dev/hello", requestOptions);
+            const response = await fetch(env["env"], requestOptions);
             const data = await response.json();
             console.log(data)
         }

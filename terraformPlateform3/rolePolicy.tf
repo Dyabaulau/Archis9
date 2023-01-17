@@ -18,7 +18,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "example_policy" {
-  name = "example_policy"
+  name   = "example_policy"
   policy = <<EOF
 {
     "Version": "2012-10-17",
@@ -43,14 +43,14 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "hello_lambda_policy" {
-  role = aws_iam_role.hello_lambda_exec.name
-  policy_arn = "${aws_iam_policy.example_policy.arn}"//"arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  role       = aws_iam_role.hello_lambda_exec.name
+  policy_arn = aws_iam_policy.example_policy.arn //"arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
 resource "aws_lambda_permission" "api_gw" {
-  statement_id = "AllowExecutionFromAPIGateway"
-  action = "lambda:InvokeFunction"
+  statement_id  = "AllowExecutionFromAPIGateway"
+  action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.hello.function_name
-  principal = "apigateway.amazonaws.com"
-  source_arn = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
 }

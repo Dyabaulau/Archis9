@@ -1,4 +1,5 @@
 import json
+import decimal
 import uuid
 import boto3
 from boto3.dynamodb.conditions import Key, Attr
@@ -17,7 +18,7 @@ def helloworld(event, context):
             return {
                     'statusCode': 200,
                     'headers': { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-                    'body': json.dumps(data)
+                    'body': json.dumps(data, default=to_serializable)
                 }
         elif method == "POST":
             if not "body" in event:
@@ -31,7 +32,7 @@ def helloworld(event, context):
             return {
                     'statusCode': 200,
                     'headers': { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-                    'body': json.dumps(response)
+                    'body': json.dumps(body)
                 }
     except Exception as ex:
         return {
@@ -39,3 +40,11 @@ def helloworld(event, context):
                 'headers': { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
                 'body': json.dumps({'event': event, 'exception': ex.__str__()})
         }
+
+def to_serializable(val):
+    """JSON serializer for objects not serializable by default"""
+
+    if type(val) is decimal.Decimal:
+        return int(val)
+
+    return val
