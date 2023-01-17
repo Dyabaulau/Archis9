@@ -12,7 +12,7 @@ provider "aws" {
   region = "eu-west-3"
 }
 
-data "aws_ami" "amazon_ami" {
+/*data "aws_ami" "amazon_ami" {
   filter {
     name   = "name"
     values = ["amzn2-ami-hvm-2.0.20220606.1-x86_64-gp2"]
@@ -23,7 +23,7 @@ data "aws_ami" "amazon_ami" {
   }
   most_recent = true
   owners      = ["amazon"]
-}
+}*/
 
 resource "aws_security_group" "back" {
   name        = "backend"
@@ -88,4 +88,25 @@ resource "aws_autoscaling_group" "backend-instance" {
   min_size           = 1
 
   launch_configuration = aws_launch_configuration.backend-config.id
+}
+
+resource "aws_launch_configuration" "database-config" {
+  image_id        = "ami-02b01316e6e3496d9"
+  instance_type   = "t2.micro"
+  security_groups = [aws_security_group.back.name]
+  user_data = templatefile("${path.module}/deployment_scripts/database.sh", {
+  })
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "database-instance" {
+  availability_zones = ["eu-west-3a"]
+  desired_capacity   = 1
+  max_size           = 1
+  min_size           = 1
+
+  launch_configuration = aws_launch_configuration.database-config.id
 }

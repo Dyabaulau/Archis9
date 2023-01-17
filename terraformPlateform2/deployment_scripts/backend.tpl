@@ -16,7 +16,7 @@ sudo yum install -y git
 git clone https://github.com/Dyabaulau/Archis9.git
 
 # Move to the backend folder
-cd Archis9/fastapi
+cd Archis9/fast_api
 
 pip3 install fastapi uvicorn pymongo sqlalchemy
 
