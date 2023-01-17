@@ -90,7 +90,28 @@ resource "aws_autoscaling_group" "backend-instance" {
   launch_configuration = aws_launch_configuration.backend-config.id
 }
 
-resource "aws_launch_configuration" "database-config" {
+resource "aws_launch_configuration" "frontend-config" {
+  image_id        = "ami-02b01316e6e3496d9"
+  instance_type   = "t2.micro"
+  security_groups = [aws_security_group.back.name]
+  user_data = templatefile("${path.module}/deployment_scripts/frontend.tpl", {
+  })
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "frontend-instance" {
+  availability_zones = ["eu-west-3a"]
+  desired_capacity   = 1
+  max_size           = 1
+  min_size           = 1
+
+  launch_configuration = aws_launch_configuration.frontend-config.id
+}
+
+/*resource "aws_launch_configuration" "database-config" {
   image_id        = "ami-02b01316e6e3496d9"
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.back.name]
@@ -109,4 +130,4 @@ resource "aws_autoscaling_group" "database-instance" {
   min_size           = 1
 
   launch_configuration = aws_launch_configuration.database-config.id
-}
+}*/

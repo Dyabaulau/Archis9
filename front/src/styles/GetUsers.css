@@ -1,0 +1,24 @@
+.gridLayout{
+    display: grid;
+    gap: 1ch;
+    grid-template-columns: repeat(4, 1fr);
+    width: 90vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    margin-top: 5vh;
+    padding: 0;
+}
+
+.card{
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: scale 100ms ease-in-out;
+    list-style-type: none;
+}
+
+p{
+    padding: 1vh 1vw;
+}

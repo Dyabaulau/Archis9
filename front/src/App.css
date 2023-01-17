@@ -1,0 +1,13 @@
+.nav_bar {
+  display: flex;
+  background-color: #212529;
+  height: 6vh;
+  align-items: center
+}
+
+.nav_link {
+  margin: 0 3vw;
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
