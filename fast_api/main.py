@@ -21,7 +21,7 @@ class Person(BaseModel):
     name: str
     age: int
 
-@app.Post("/hello")
+@app.post("/hello")
 async def hello(person: Person):
     app.data.append(person)
     return person
