@@ -25,14 +25,9 @@ data "aws_ami" "amazon_ami" {
   owners      = ["amazon"]
 }
 
-resource "aws_vpc" "backend_vpc" {
-  cidr_block = "10.0.0.0/16"
-}
-
-resource "aws_security_group" "front" {
+resource "aws_security_group" "back" {
   name        = "backend"
   description = "Controls access to the backend instances"
-  vpc_id      = aws_vpc.backend_vpc.id
 
   ingress {
     from_port   = 22
@@ -74,14 +69,23 @@ variable "key_name" {
   default = ""
 }
 
-resource "aws_launch_template" "front" {
-  name          = "backend-template"
-  image_id      = data.aws_ami.amazon_ami.id
-  instance_type = "t2.micro"
-  key_name      = var.key_name
-  vpc_security_group_ids = [
-    aws_security_group.front.id,
-  ]
+resource "aws_launch_configuration" "backend-config" {
+  image_id        = "ami-02b01316e6e3496d9"
+  instance_type   = "t2.micro"
+  security_groups = [aws_security_group.back.name]
+  user_data = templatefile("${path.module}/deployment_scripts/backend.tpl", {
+  })
 
-  user_data = base64encode(templatefile("${path.root}/deployment_scripts/backend.tpl", {}))
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_autoscaling_group" "backend-instance" {
+  availability_zones = ["eu-west-3a"]
+  desired_capacity   = 1
+  max_size           = 1
+  min_size           = 1
+
+  launch_configuration = aws_launch_configuration.backend-config.id
 }

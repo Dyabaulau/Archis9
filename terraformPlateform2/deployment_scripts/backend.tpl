@@ -13,7 +13,7 @@ python3 get-pip.py
 sudo yum install -y git
 
 # Clone the react application from Github
-git clone git@github.com:Dyabaulau/Archis9.git
+git clone https://github.com/Dyabaulau/Archis9.git
 
 # Move to the backend folder
 cd Archis9/fastapi
