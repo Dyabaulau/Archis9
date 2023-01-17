@@ -21,4 +21,4 @@ cd Archis9/fastapi
 pip3 install fastapi uvicorn pymongo sqlalchemy
 
 # Start the server
-uvicorn duckapi.app:app --host 0.0.0.0
+uvicorn main:app --host 0.0.0.0
