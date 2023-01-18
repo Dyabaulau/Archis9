@@ -46,7 +46,7 @@ function SendUserForm() {
         };
 
         try {
-            const response = await fetch(process.env.BACKEND_URL + "/hello", requestOptions);
+            const response = await fetch(process.env.REACT_APP_BACKEND_URL + "/hello", requestOptions);
             const data = await response.json();
             console.log(data)
         }

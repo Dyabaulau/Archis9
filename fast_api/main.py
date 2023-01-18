@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+import uuid
 
 app = FastAPI()
 
@@ -40,6 +41,6 @@ class AddPerson(BaseModel):
 
 @app.post("/hello")
 async def hello(person: AddPerson):
-    person = Person(uuid="123", **person.dict())
+    person = Person(uuid=str(uuid.uuid4()), **person.dict())
     app.data.append(person)
     return person
