@@ -18,9 +18,9 @@ app.add_middleware(
 async def startup_event():
     print("Application started!")
     app.data = []
-    app.client = MongoClient("mongodb://35.180.186.141:27017/")
-    app.db = app.client["ta_db"]
-    app.collection = app.db["ta_db"]
+    app.client = MongoClient("mongodb+srv://admin:password1234@cluster0.fdiyvvy.mongodb.net/?retryWrites=true&w=majority")
+    app.db = app.client["arinf"]
+    app.collection = app.db["arinf_member"]
 
 
 @app.get("/")
@@ -48,5 +48,5 @@ class AddPerson(BaseModel):
 @app.post("/hello")
 async def hello(person: AddPerson):
     person = Person(uuid=str(uuid.uuid4()), **person.dict())
-    app.data.append(person)
+    app.collection.insert_one(person.dict())
     return person
