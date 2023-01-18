@@ -57,8 +57,8 @@ resource "aws_launch_configuration" "backend-config" {
 
 resource "aws_autoscaling_group" "backend-instance" {
   availability_zones = ["eu-west-3a"]
-  desired_capacity   = 1
-  max_size           = 1
+  desired_capacity   = 2
+  max_size           = 2
   min_size           = 1
 
   load_balancers = [aws_elb.elb-back.name]

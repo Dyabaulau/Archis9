@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from pymongo import MongoClient
 import uuid
 
 app = FastAPI()
@@ -17,6 +18,10 @@ app.add_middleware(
 async def startup_event():
     print("Application started!")
     app.data = []
+    app.client = MongoClient("mongodb://35.180.186.141:27017/")
+    app.db = app.client["ta_db"]
+    app.collection = app.db["ta_db"]
+
 
 @app.get("/")
 async def root():
@@ -24,7 +29,8 @@ async def root():
 
 @app.get("/hello")
 async def hello():
-    return app.data
+    list = app.collection.find()
+    return list
 
 class Person(BaseModel):
     uuid: str
