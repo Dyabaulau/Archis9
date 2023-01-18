@@ -23,7 +23,7 @@ function SendUserForm() {
     useEffect(() => {
     }, []);
 
-    console.log(process.env.BACKEND_URL)
+    console.log(process.env.REACT_APP_BACKEND_URL)
 
     const sendRequest = async () => {
 
