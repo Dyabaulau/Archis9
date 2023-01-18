@@ -29,8 +29,8 @@ async def root():
 
 @app.get("/hello")
 async def hello():
-    list = app.collection.find({}, {"_id": 0})
-    return list
+    data = list(app.collection.find({}, {"_id": 0}))
+    return data
 
 class Person(BaseModel):
     uuid: str
