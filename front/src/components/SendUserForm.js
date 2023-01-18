@@ -23,7 +23,7 @@ function SendUserForm() {
     useEffect(() => {
     }, []);
 
-    console.log(env["env"])
+    console.log(process.env.BACKEND_URL)
 
     const sendRequest = async () => {
 
@@ -46,9 +46,7 @@ function SendUserForm() {
         };
 
         try {
-            const back_url = process.env.BACKEND_URL;
-            console.log(back_url)
-            const response = await fetch(back_url, requestOptions);
+            const response = await fetch(process.env.BACKEND_URL, requestOptions);
             const data = await response.json();
             console.log(data)
         }
