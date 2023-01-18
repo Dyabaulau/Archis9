@@ -21,26 +21,6 @@ function SendUserForm() {
     }
 
     useEffect(() => {
-        const configRequest = {
-            method: 'GET',
-            headers:
-            {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Access-Control-Allow-Origin': '*', // This is the important part
-            }
-
-        };
-
-        fetch('https://balapp-archi-front.s3.amazonaws.com/config.env', configRequest)
-            .then(response => response.text())
-            .then(text => {
-                // parse the text file as json
-                console.log(text)
-                const env = text.split('=')[1]
-                console.log(env)
-                setEnv({ env });
-            });
     }, []);
 
     console.log(env["env"])
@@ -66,7 +46,9 @@ function SendUserForm() {
         };
 
         try {
-            const response = await fetch(env["env"], requestOptions);
+            const back_url = process.env.BACKEND_URL;
+            console.log(back_url)
+            const response = await fetch(back_url, requestOptions);
             const data = await response.json();
             console.log(data)
         }

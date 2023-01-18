@@ -65,3 +65,7 @@ resource "aws_autoscaling_group" "backend-instance" {
 
   launch_configuration = aws_launch_configuration.backend-config.id
 }
+
+output "name" {
+  value = aws_elb.elb-back.dns_name
+}

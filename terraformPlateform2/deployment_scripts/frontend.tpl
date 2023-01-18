@@ -9,5 +9,8 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 3000
 
 git clone https://github.com/Dyabaulau/Archis9.git
 cd Archis9/front
+
+echo "BACKEND_URL=${backend_url}" > .env
+
 npm install
 npm start

@@ -4,7 +4,7 @@ resource "aws_subnet" "front-subnet" {
   map_public_ip_on_launch = true
   availability_zone       = "eu-west-3a"
   tags = {
-    Name = "back-subnet"
+    Name = "front-subnet"
   }
 }
 resource "aws_route_table" "front-route" {
@@ -14,7 +14,7 @@ resource "aws_route_table" "front-route" {
     gateway_id = "igw-0793b7264d4417a91"
   }
   tags = {
-    Name = "back-route"
+    Name = "front-route"
   }
 }
 resource "aws_route_table_association" "front-route-association" {
@@ -23,7 +23,7 @@ resource "aws_route_table_association" "front-route-association" {
 }
 
 resource "aws_elb" "elb-front" {
-  name            = "elb-back"
+  name            = "elb-front"
   security_groups = [aws_security_group.back.id]
   subnets         = [aws_subnet.front-subnet.id]
 
@@ -32,13 +32,13 @@ resource "aws_elb" "elb-front" {
     unhealthy_threshold = 2
     timeout             = 3
     interval            = 5
-    target              = "HTTP:8000/"
+    target              = "HTTP:80/"
   }
 
   listener {
     lb_port           = 80
     lb_protocol       = "http"
-    instance_port     = 8000
+    instance_port     = 80
     instance_protocol = "http"
   }
 }
@@ -48,6 +48,7 @@ resource "aws_launch_configuration" "frontend-config" {
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.back.name]
   user_data = templatefile("${path.module}/deployment_scripts/frontend.tpl", {
+    backend_url = "http://${aws_elb.elb-back.dns_name}:80"
   })
 
   lifecycle {
@@ -60,6 +61,8 @@ resource "aws_autoscaling_group" "frontend-instance" {
   desired_capacity   = 1
   max_size           = 1
   min_size           = 1
+
+  load_balancers = [aws_elb.elb-front.name]
 
   launch_configuration = aws_launch_configuration.frontend-config.id
 }

@@ -18,19 +18,13 @@ function GetUsers() {
 
         };
 
-        fetch('https://balapp-archi-front.s3.amazonaws.com/config.env', configRequest)
-            .then(response => response.text())
-            .then(text => {
-                console.log(text)
-                const env = text.split('=')[1]
-                console.log(env)
-                setEnv({ env });
-                console.log(env)
-                return fetch(env)
-            }).then((response) => response.json())
-            .then((fetchedData) => {
-                console.log(fetchedData)
-                setData(fetchedData)
+        const back_url = process.env.BACKEND_URL;
+        console.log(back_url)
+        fetch(back_url, configRequest)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+                setData(data)
             })
             .catch((err) => { console.log("Error on Get Users :" + err); })
     }
