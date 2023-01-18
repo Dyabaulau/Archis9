@@ -18,7 +18,7 @@ function GetUsers() {
 
         };
 
-        const back_url = process.env.REACT_APP_BACKEND_URL;
+        const back_url = process.env.REACT_APP_BACKEND_URL + "/hello";
         console.log(back_url)
         fetch(back_url, configRequest)
             .then((response) => response.json())

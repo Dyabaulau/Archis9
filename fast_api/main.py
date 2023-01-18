@@ -32,7 +32,14 @@ class Person(BaseModel):
     age: int
     profession: str
 
+class AddPerson(BaseModel):
+    firstName: str
+    lastName: str
+    age: int
+    profession: str
+
 @app.post("/hello")
-async def hello(person: Person):
+async def hello(person: AddPerson):
+    person = Person(uuid="123", **person.dict())
     app.data.append(person)
     return person
