@@ -29,7 +29,7 @@ async def root():
 
 @app.get("/hello")
 async def hello():
-    list = app.collection.find()
+    list = app.collection.find({}, {"_id": 0})
     return list
 
 class Person(BaseModel):
